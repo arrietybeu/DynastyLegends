@@ -118,6 +118,22 @@
 - Content sanitization
 - Batch processing
 
+### 15. [14-Servercheck-Service.md](./14-Servercheck-Service.md)
+**Server Health Check Service**
+- Server kiểm tra sức khỏe server (gRPC internal)
+- Multi-service monitoring
+- Health checking
+- Alert system
+- FeiShu integration
+
+### 16. [15-Stressx-Service.md](./15-Stressx-Service.md)
+**Stress Testing Server**
+- Server kiểm tra tải (gRPC internal)
+- Robot simulation
+- Load testing
+- Performance testing
+- Action state management
+
 ## Kiến trúc tổng thể
 
 ### Microservices Architecture
@@ -170,9 +186,15 @@
 └─────────────────┘    └─────────────────┘    └─────────────────┘
 
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Pingserver    │    │  Sensitiveword  │    │   Other Services│
-│ (Ping Server)   │    │ (Filter Server) │    │   (Auth, etc.)  │
-│   Port: 8601    │    │  gRPC Internal  │    │                 │
+│   Pingserver    │    │  Sensitiveword  │    │   Servercheck   │
+│ (Ping Server)   │    │ (Filter Server) │    │ (Health Check)  │
+│   Port: 8601    │    │  gRPC Internal  │    │  gRPC Internal  │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│     Stressx     │    │   Other Services│    │   Future Services│
+│ (Stress Testing)│    │   (Auth, etc.)  │    │   (New Features)│
+│  gRPC Internal  │    │                 │    │                 │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
@@ -227,7 +249,7 @@
 
 ### 1. Đọc tài liệu theo thứ tự
 1. Bắt đầu với [00-Project-Overview.md](./00-Project-Overview.md) để hiểu tổng quan
-2. Đọc từng service README (14 services) để hiểu chi tiết
+2. Đọc từng service README (16 services) để hiểu chi tiết
 3. Tham khảo cấu hình và deployment
 
 ### 2. Triển khai hệ thống
