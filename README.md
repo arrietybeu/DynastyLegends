@@ -94,6 +94,30 @@
 - Progress tracking
 - Data consolidation
 
+### 12. [11-Friendx-Service.md](./11-Friendx-Service.md)
+**Friend Management Server**
+- Server quản lý bạn bè (gRPC internal)
+- Friend operations
+- Blacklist management
+- Rival system
+- LRU cache system
+
+### 13. [12-Pingserver-Service.md](./12-Pingserver-Service.md)
+**Ping Test Server**
+- Server kiểm tra ping (port 8601)
+- KCP protocol testing
+- Network performance measurement
+- Connection quality testing
+- Service discovery
+
+### 14. [13-Sensitiveword-Service.md](./13-Sensitiveword-Service.md)
+**Sensitive Word Filter Server**
+- Server lọc từ nhạy cảm (gRPC internal)
+- Content filtering
+- Word detection
+- Content sanitization
+- Batch processing
+
 ## Kiến trúc tổng thể
 
 ### Microservices Architecture
@@ -140,9 +164,15 @@
 └────────────────┘    └───────────────────┘    └───────────────────┘
 
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   ClientBiLog   │    │     Merger      │    │   Other Services│
-│ (BI Log Server) │    │ (Merge Server)  │    │   (Auth, etc.)  │
-│   Port: 8089    │    │   Port: 7101    │    │                 │
+│   ClientBiLog   │    │     Merger      │    │    Friendx      │
+│ (BI Log Server) │    │ (Merge Server)  │    │ (Friend Server) │
+│   Port: 8089    │    │   Port: 7101    │    │   gRPC Internal │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Pingserver    │    │  Sensitiveword  │    │   Other Services│
+│ (Ping Server)   │    │ (Filter Server) │    │   (Auth, etc.)  │
+│   Port: 8601    │    │  gRPC Internal  │    │                 │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
@@ -197,7 +227,7 @@
 
 ### 1. Đọc tài liệu theo thứ tự
 1. Bắt đầu với [00-Project-Overview.md](./00-Project-Overview.md) để hiểu tổng quan
-2. Đọc từng service README (11 services) để hiểu chi tiết
+2. Đọc từng service README (14 services) để hiểu chi tiết
 3. Tham khảo cấu hình và deployment
 
 ### 2. Triển khai hệ thống
