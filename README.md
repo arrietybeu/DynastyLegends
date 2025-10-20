@@ -70,6 +70,30 @@
 - Payment management
 - Game management
 
+### 9. [08-BattlexAgent-Service.md](./08-BattlexAgent-Service.md)
+**Battle Agent Server**
+- Server agent xử lý battle (port 8705)
+- Proxy connection management
+- Load balancing
+- Service discovery
+- Connection pooling
+
+### 10. [09-ClientBiLog-Service.md](./09-ClientBiLog-Service.md)
+**Client Business Intelligence Log Server**
+- Server thu thập dữ liệu BI từ client (port 8089)
+- Client log collection
+- IP geolocation
+- Data processing
+- Rate limiting
+
+### 11. [10-Merger-Service.md](./10-Merger-Service.md)
+**Server Merge Service**
+- Server xử lý hợp nhất server (port 7101)
+- Distributed merge processing
+- Worker system
+- Progress tracking
+- Data consolidation
+
 ## Kiến trúc tổng thể
 
 ### Microservices Architecture
@@ -99,17 +123,27 @@
 │    Battlex     │    │      Scene        │    │      Crossx       │
 │ (Battle Server)│    │  (Scene Server)   │    │ (Cross Server)    │
 │   Port: 8701   │    │   Port: 10003     │    │   Port: 10004     │
-└────────────────┘    └───────────────────┘    └───────────────────┘
-        │                       │                        │
-        └───────────────────────┼────────────────────────┘
-                                │
-        ┌───────────────────────┼───────────────────────┐
-        │                       │                       │
+└─────────┬──────┘    └───────────────────┘    └───────────────────┘
+          │
+┌─────────┴────────┐
+│  BattlexAgent    │
+│ (Battle Agent)   │
+│   Port: 8705     │
+└──────────────────┘
+
+        ┌─────────────────────────────────────────────────────────┐
+        │                                                         │
 ┌───────┴────────┐    ┌─────────┴─────────┐    ┌─────────┴─────────┐
 │    Cachex      │    │       Payx        │    │     Gmserver      │
 │ (Cache Server) │    │ (Payment Server)  │    │  (GM Server)      │
 │   Port: 10005  │    │   Port: 2019      │    │   Port: 8808      │
 └────────────────┘    └───────────────────┘    └───────────────────┘
+
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   ClientBiLog   │    │     Merger      │    │   Other Services│
+│ (BI Log Server) │    │ (Merge Server)  │    │   (Auth, etc.)  │
+│   Port: 8089    │    │   Port: 7101    │    │                 │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
 ### Giao thức giao tiếp
@@ -118,11 +152,14 @@
 - **TCP/TLS**: Gatex (port 8667) - Chính
 - **WebSocket**: Cometx (port 10001) - Chat
 - **HTTP/HTTPS**: Các API endpoints
+- **HTTP**: ClientBiLog (port 8089) - BI Log collection
 
 #### 2. Inter-Service Communication
 - **gRPC**: Giao tiếp giữa các service
 - **NATS**: Message queue
 - **etcd**: Service discovery
+- **Proxy**: BattlexAgent (port 8705) - Battle proxy
+- **Merge**: Merger (port 7101) - Server merge operations
 
 #### 3. Database
 - **MySQL**: Game data chính
@@ -160,7 +197,7 @@
 
 ### 1. Đọc tài liệu theo thứ tự
 1. Bắt đầu với [00-Project-Overview.md](./00-Project-Overview.md) để hiểu tổng quan
-2. Đọc từng service README để hiểu chi tiết
+2. Đọc từng service README (11 services) để hiểu chi tiết
 3. Tham khảo cấu hình và deployment
 
 ### 2. Triển khai hệ thống
